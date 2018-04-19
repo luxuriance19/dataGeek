@@ -52,13 +52,13 @@
 相关算法：  
 > 异常检测： 
 * 局部异常因子： 遵循预先制定的规则（偏离大部分正常值的数据认为是异常值），寻找异常值的无监督的异常检测算法。利用了KNN的算法类似，寻找第K近的值  
-$$Rechability Distance： \quad RD_{k}(x,x^{'}) = max(||x-x^{(k)}||,||x-x^{'}||),x^{(k)}:距离x第k近的样本。$$
-$$局部可达密度： \quad LRD_{k}(x) = ( \frac{1}{k}\sum_{i=1}^{k}RD_{k}(x^{(i)},x))^{-1}$$
-$$局部异常因子: \quad LOF_{k} = \frac{\frac{1}{k}\sum_{i=1}^{k}LRD_{k}(x^{(i)})}{LRD_{k}(x)}$$
+$Rechability Distance： \quad RD_{k}(x,x^{'}) = max(||x-x^{(k)}||,||x-x^{'}||),x^{(k)}:距离x第k近的样本。$
+$局部可达密度： \quad LRD_{k}(x) = ( \frac{1}{k}\sum_{i=1}^{k}RD_{k}(x^{(i)},x))^{-1}$
+$局部异常因子: \quad LOF_{k} = \frac{\frac{1}{k}\sum_{i=1}^{k}LRD_{k}(x^{(i)})}{LRD_{k}(x)}$
 LOF值大，x就会被看为异常。
 * 支持向量机的异常检测：
-$$ min_{c,R,\xi} = [R^{2} + C\sum_{i = 1}^{n}\xi_{i}]$$
-$$subject to \quad||x_{i} -c||^{2} <= R^{2} + \xi_{i}, \xi_{i} >=0 ,i = 1,2,...,n $$
+$ min_{c,R,\xi} = [R^{2} + C\sum_{i = 1}^{n}\xi_{i}]$
+$subject to \quad||x_{i} -c||^{2} <= R^{2} + \xi_{i}, \xi_{i} >=0 ,i = 1,2,...,n $
 * 基于密度比的异常检测： KL散度法检测。
 
 > 无监督降维：
