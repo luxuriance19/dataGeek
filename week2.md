@@ -174,8 +174,8 @@ tf.get_variable()是创建变量最好的方式，这个函数要求你对创建
 ### 学习中知识点的收获：
 softmax的求导第一次计算，感受到了其中的神奇。tensorflow的一些操作还是有一点疑问，需要从实践中获取。曾经翻译过的tensorflow的API也算是派上了一点用场，然而赶不上google的更新速度，年前还没有中文翻译，现在中文翻译只是tutorial没有了。自己要加油学习。
 
-参考文献：
-https://blog.csdn.net/cyh_24/article/details/50593400  
+参考文献：  
+https://blog.csdn.net/cyh_24/article/details/50593400   
 https://www.datageekers.com/t/zxca368-tf--week2/871  
 http://www.cnblogs.com/tornadomeet/p/3428843.html  
 https://data-sci.info/2017/06/11/%E6%9C%80%E6%96%B0%E6%BF%80%E6%B4%BB%E7%A5%9E%E7%B6%93%E5%85%83self-normalization-neural-network-selu/
