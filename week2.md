@@ -130,8 +130,8 @@ variable scope允许我们创建一个新的变量并且提供检查的功能。
 比如我们如果想每层都创建权重值w和偏置b，这个时候，如果说我们写了一个函数，经过不同的输入我们想要调用两次，程序执行就会出错。  
 因为这个函数在第一次执行的时候，就会创建这个函数里面的变量，在第二次调用函数的时候，程序会不知道我们是想要创建新的变量还是使用援用的变量。所以函数就会起冲突。
 变量域就是在这个时候起作用：我们通过不同的变量域，然后调用这个函数。
-'
-     ## 1:write a function to create a convolutional/relu layer:'
+·
+     ## 1:write a function to create a convolutional/relu layer:'
      def conv_relu(input,kernel_shape,bias_shape):
          #Create variable named "weights"
          weights = tf.get_variable("weights", kernel_shape, 
@@ -157,8 +157,8 @@ variable scope允许我们创建一个新的变量并且提供检查的功能。
              relu1 = conv_relu(input_images, [5, 5, 32, 32], [32])
          with tf.variable_scope("conv2"):
              # Variables created here will be named "conv2/weights", "conv2/biases".
-             return conv_relu(relu1, [5, 5, 32, 32], [32])
-'
+             return conv_relu(relu1, [5, 5, 32, 32], [32])
+·
 
 ### tf.variable_scope() 和tf.get_variable()的理解？
 tf.get_variable()是创建变量最好的方式，这个函数要求你对创建的变量进行定义。这个名称将被其他副本用来访问同一个变量，以及检验和导出模型时命名这个变量的值。  
