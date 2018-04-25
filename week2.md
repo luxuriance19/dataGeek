@@ -1,3 +1,4 @@
+https://www.datageekers.com/t/luxuriance19-tf-week2/1018/5
 ### 1、back propagation算法原理理解？
 BP算法有两个计算过程，前向计算过程和后向传播的过程。  
 算法流程：  
