@@ -48,21 +48,21 @@ BP算法的核心在与梯度的计算的过程，前向的过程当中，只需
 基于这个原因下面有三个线性整流单元的扩展
 max（0，z) + alpha\*min(0,z) 如果alpha=-1就是 **绝对值整流(absolute value rectification)** ， 对图像中的对象识别，也就是寻找在输入照明极性反转下不变的特征有意义。 alpha=0.01这类的比较小的值是 **渗漏整流线性单元(Leaky ReLU)** 。 将alpha作为一个学习参数是 **参数化整流线性单元(parametric ReLU)** 。 
 整流线性耽于那的另外一个扩展
+
 **maxout单元** 将z分为魅族具有k个值的组，输出每组中最大的元素。 
-)
 * 优点： 因为可以学习多达k段的分段线性的凸函数，所以可以视为学习激活函数本身而不仅仅是短圆之间的关系，使用足够大的k，可以通过任意的精确度来近似任何凸函数。具有两块地maxout层可以学习实现和传统层相同地输入x的函数。 
 * 缺点： 因为需要k个权重向量参数化，所以需要比整流线性单元更多的正则化。如果训练集很大，每个单元的块数保持比较低，那么可以再没有正则的情况下工作不错。
 > tf.contrib.layers.maxout(inputs, num_units,axis=-1,scope=None)
+** Maxout** （需加深理解） 
+Maxout 是对 ReLU 和 Leaky ReLU 的一般化归纳，它的函数是：max(w1Tx+b1,w2Tx+b2)。Maxout 神经元就拥有 ReLU 单元的所有优点（线性操作和不饱和），而没有它的缺点（死亡的 ReLU 单元）。Maxout 的拟合能力是非常强的，它可以拟合任意的的凸函数。缺点是参数 Double 了,也就是参数加倍了。  
+Maxout是通过分组，然后选择每组中的最大值输出，每个组有多少个元素是事先定义的，也就是上面说的K个值的参数。 每个组里面的K个值都是通过wx+b线性训练得出的，maxout实际上就是多段线性函数迭加，所以可以实现任何的ReLU的功能。（详细查看Tips of DNN)
 
 重点介绍： 
 **渗漏整流线性单元(Leaky ReLU)**
 Leaky ReLU 是为解决 “ReLU死亡” 问题的尝试。ReLU 中当x<0 时，函数值为0。而="" leaky="" relu="" 则是给出一个很小的负数梯度值，比如="" 0.01。这样，既修正了数据分布，又保留了一些负轴的值，使得负轴信息不会全部丢失。="" 公式：f(x)="α"x(x=""<=""0),="" f(x)="x(x">=0),α 是一个小常数。
 扩展：* PReLU. 对于 Leaky ReLU 中的 α，通常都是通过先验知识人工赋值的。Parametric ReLU 是将 α 作为参数训练，取得的效果还不错。
-      * Randomized Leaky ReLU. 其是 Leaky ReLU 的 random 版本,在训练过程中，α 是从一个高斯分布中随机出来的，然后再在测试过程中进行修正。
+    * Randomized Leaky ReLU. 其是 Leaky ReLU 的 random 版本,在训练过程中，α 是从一个高斯分布中随机出来的，然后再在测试过程中进行修正。
 > tf.nn.leaky_relu(features,alpha=0.2, name=None)
-
-** Maxout** （需加深理解） 
-Maxout 是对 ReLU 和 Leaky ReLU 的一般化归纳，它的函数是：max(w1Tx+b1,w2Tx+b2)。Maxout 神经元就拥有 ReLU 单元的所有优点（线性操作和不饱和），而没有它的缺点（死亡的 ReLU 单元）。Maxout 的拟合能力是非常强的，它可以拟合任意的的凸函数。缺点是参数 Double 了,也就是参数加倍了。  
 
 **sigmoid函数：**  
 * 优点： 输入任意实属值，将其变换到(0,1)区间，大的负数映射为0，大的正数映射为1。
@@ -131,7 +131,7 @@ variable scope允许我们创建一个新的变量并且提供检查的功能。
 比如我们如果想每层都创建权重值w和偏置b，这个时候，如果说我们写了一个函数，经过不同的输入我们想要调用两次，程序执行就会出错。  
 因为这个函数在第一次执行的时候，就会创建这个函数里面的变量，在第二次调用函数的时候，程序会不知道我们是想要创建新的变量还是使用援用的变量。所以函数就会起冲突。
 变量域就是在这个时候起作用：我们通过不同的变量域，然后调用这个函数。
-·
+<pre><code>
      ## 1:write a function to create a convolutional/relu layer:'
      def conv_relu(input,kernel_shape,bias_shape):
          #Create variable named "weights"
@@ -159,7 +159,7 @@ variable scope允许我们创建一个新的变量并且提供检查的功能。
          with tf.variable_scope("conv2"):
              # Variables created here will be named "conv2/weights", "conv2/biases".
              return conv_relu(relu1, [5, 5, 32, 32], [32])
-·
+</code></pre>
 
 ### tf.variable_scope() 和tf.get_variable()的理解？
 tf.get_variable()是创建变量最好的方式，这个函数要求你对创建的变量进行定义。这个名称将被其他副本用来访问同一个变量，以及检验和导出模型时命名这个变量的值。  
