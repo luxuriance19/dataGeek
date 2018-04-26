@@ -82,6 +82,11 @@ Leaky ReLU 是为解决 “ReLU死亡” 问题的尝试。ReLU 中当x<0 时，
 > tf函数： y = 1/(1+exp(-x))
 > tf.sigmoid(x,name=None) /tf.nn.sigmoid
 
+**ELU**  
+f(x) = x (x>0); f(x) =alpha*(exp(x)-1) (x<=0)
+* 优点： 所有的ReLU的优点;接近与0尽脑汁的输出， 相对与Leaky ReLU的负饱和区间增加了对噪声样本的稳健性。
+* 缺点： 幂计算的复杂性
+
 **SELU**  
 将输入自动normalization到均值为零方差为1。
 * 优点：不同的特征的维度的尺度都是一样的，这样在梯度计算的时候，不会出现不同维度特征差别大导致梯度忽大忽小出现zig-zag的情况（出现这种情况的化，收敛会比较慢），所以会比较容易训练。也改进了会出现梯度消失的问题。
@@ -92,7 +97,7 @@ lambda = 1.050700； alpha = 1.67326
 > tf.nn.selu(features, name=None)  
 
 <转自 https://zhuanlan.zhihu.com/p/21741716>
-一句话：“那么该用那种呢？”用ReLU非线性函数。注意设置好学习率，或许可以监控你的网络中死亡的神经元占的比例。如果单元死亡问题困扰你，就试试Leaky ReLU或者Maxout，不要再用sigmoid了。也可以试试tanh，但是其效果应该不如ReLU或者Maxout。
+一句话：“那么该用那种呢？”用ReLU非线性函数。注意设置好学习率，或许可以监控你的网络中死亡的神经元占的比例。如果单元死亡问题困扰你，就试试Leaky ReLU或者Maxout，ELU,SELU，不要再用sigmoid了。也可以试试tanh，但是其效果应该不如ReLU或者Maxout。
 
 ### softmax和cross_entropy原理解释？
 * softmax： 在LR二分类问题当中，可以利用sigmoid函数将输入仿射空间映射到(0,1)的范围区间，从而得到预测类别的概率。将这个问题推广到多分类的问题当中，就可以使用softmax函数。对输出的值进行归一化处理。   
