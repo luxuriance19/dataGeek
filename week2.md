@@ -122,6 +122,7 @@ $D_{KL}(p\lVert q) = begin{a}
 ### tf.placeholder(),tf.constant(),tf.Variable()的区别？ 
 * tf.placeholder()：
 > 顾名思义，这个是占位符号，用来传递训练样本给模型。当数据的维度不确定的时候，可以用None来确定。tf.placeholder()不需要指定初始值，但是需要指定初始的类型。
+  tf.placeholder()不会出现在计算图上面，所以这是模型在训练的时候必须要传递给sess.run()的feed_dict()的值。
 * tf.constant(value, dtype=None, shape=None, name=‘Const’, verify_shape=False)：
 > 定义常量，如果定义了传递value的形状，也就是shape参数，value的shape不能够超过shape的大小，如果说value的长度小于shape定义的参数，那么多余的由传递的value的最后一个值填充。
 * tf.Variable():
