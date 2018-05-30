@@ -1,0 +1,51 @@
+data_convert_example.py 转换文件的执行文件，可以实现binary to text或者text to binary
+---
+data.py word2Id和Id2word，实现数据的word和id的相互转换，读入的是list，传回的也是list
+---
+batch_reader.py 
+进程之间是相互独立的，主进程的代码运行结束，守护进程随即终止。
+守护进程内无法再开启子进程，否则会抛出异常。
+
+在这里因为用到了守护线程，所以这里把守护线程的概念梳理一下：
+守护××会等待主××运行完毕之后被销毁
+对于主进程来说，运行完毕是指住进成代码执行完毕
+对于主线程来说，运行完毕指的是主线程所在的进程内所有非守护线程全部都运行完毕，主线程才算运行完毕。
+
+详细解释：
+主进程在代码结束之后就已经算运行完毕了（守护进程在这里就会被回收），主进程会一直等待非守护的子进程都运行完毕后回收子进程的资源（否则会产生僵尸进程），才会结束。
+主线程在其他非守护进程运行完毕才算运行完毕（守护线程在此时就会被回收）。主线程的结束意味着进程的结束，进程整体的资源都会被回收，而进程必须保证非守护线程都运行完毕后才能够算结束。
+
+在这里通过线程利用six.moves.queue来实现数据的batch传输
+batch_reader:
+在这个数据的处理当中，将<d><p><s></s></p></d>元素已经过滤掉
+以下的enc_inputs，dec_inputs都有输入句子长度的限制：hyperpaprameter，所以输入一般都是部分文本内容
+enc_inputs:是list of article句子的word的id的元素，所以list每个元素是每句话对应的id
+dec_inputs: list, 每个元素对应的是abstract中间句子的word的id
+targets: 去除dec_inputs的开头，加上结尾的标识</s>
+enc_input_len: 每个article句子的数量
+dec_input_len: abstract 句子的数量
+最后的:
+article:对应所有article的word的id
+abstract:对应所有的abstract word的id
+
+---
+seq2seq_lib.py:这个文件对应的是loss的计算，是通过对sequence中间的某些词做采样进行loss的估计。（这里面的linear函数没有用到）
+
+---
+seq2seq_attention_model.py:
+模型为encoder和decoder部分。
+首先是seq2seeq部分，通过encoder输入和输出学习所有词汇的embedding的参数。原始的模型参数当中设置了四层的双向RNN，这里（双向RNN的层数是一个可调参数 enc_layers）
+通过一个词汇的映射，将decoder_inputs里面的词汇代替成embedding vector作为decoder的输入。
+在这里，decoder是一层的加了attention机制的RNN。
+
+---
+seq2seq_attention.py 执行文件，有train，eval和decode三个模式。
+train，eval调用的基本上是seq2seq_attention_model.py
+
+在decode模式，调用的是seq2seq_attention_model.py，还有seq2seq_attention
+_decode.py,然后在这个文件中调用beam_search.py利用beam_search算法减少计算复杂度来获得次优的句子。
+
+
+
+
+
